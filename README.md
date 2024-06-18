@@ -53,11 +53,11 @@ The application is deployed on Vercel. You can access it [here](#).
 
 ## Non-functional Requirements
 
-- [ ] Use Next.js 14+ for development.
-- [ ] TypeScript with `strict` mode enabled and `noImplicitAny` set to `true`.
-- [ ] Modular architecture with clear separation of concerns.
-- [ ] Adherence to Airbnb's ESLint configuration.
-- [ ] Design is up to you but should prioritize quality code and fulfillment of requirements.
+- [x] Use Next.js 14+ for development.
+- [x] TypeScript with `strict` mode enabled and `noImplicitAny` set to `true`.
+- [x] Modular architecture with clear separation of concerns.
+- [x] Adherence to Airbnb's ESLint configuration.
+- [x] Design is up to you but should prioritize quality code and fulfillment of requirements.
 
 ## Technical Implementation
 
