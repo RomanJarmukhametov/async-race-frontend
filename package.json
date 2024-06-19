@@ -12,6 +12,7 @@
     "test": "cypress open"
   },
   "dependencies": {
+    "axios": "^1.7.2",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18"
