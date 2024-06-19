@@ -36,4 +36,9 @@ const getCars = async (page = 1, limit = 7) => {
   }
 };
 
-export default getCars;
+const getCarById = async (id: number) => {
+  const response = await apiClient.get(`/garage/${id}`);
+  return response.data;
+};
+
+export { getCars, getCarById };
