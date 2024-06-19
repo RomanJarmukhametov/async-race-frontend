@@ -12,6 +12,8 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-single-quote": "off",
     "react/jsx-one-expression-per-line": "off",
-    "typescript-eslint/quotes": ["off", "single"]
+    "typescript-eslint/quotes": ["off", "single"],
+    "import/no-extraneous-dependencies": "off",
+    "no-console": "off"
   }
 }
