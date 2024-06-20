@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Wrapper from '@/components/custom/Wrapper';
 import Heading from '@/components/custom/Heading';
+import BodyText from '@/components/custom/BodyText';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
@@ -39,7 +40,7 @@ function GaragePage() {
   return (
     <Wrapper as="section">
       <Heading level="1">Garage</Heading>
-      <p>Total cars: {totalCount}</p>
+      <BodyText size="large">Total cars: {totalCount}</BodyText>
       {/* Render a list of cars */}
       {cars.map((car) => (
         <div key={car.id}>
