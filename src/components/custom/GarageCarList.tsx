@@ -7,6 +7,9 @@ interface GarageCarListProps {
   cars: CarProps[];
 }
 
+/* The `GarageCarList` function is a React functional component that takes in a prop object `cars` of
+type `GarageCarListProps`. Inside the function, it returns JSX code that iterates over the `cars`
+array using the `map` function to create a list of car elements. */
 function GarageCarList({ cars }: GarageCarListProps) {
   return (
     <div className="mt-6 space-y-4">
