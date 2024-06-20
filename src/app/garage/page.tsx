@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Wrapper from '@/components/custom/Wrapper';
+import Heading from '@/components/custom/Heading';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
-function HomePage() {
+function GaragePage() {
   const [cars, setCars] = useState<CarProps[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -35,8 +37,8 @@ function HomePage() {
   }
 
   return (
-    <div>
-      <h1>Garage</h1>
+    <Wrapper as="section">
+      <Heading level="1">Garage</Heading>
       <p>Total cars: {totalCount}</p>
       {/* Render a list of cars */}
       {cars.map((car) => (
@@ -45,8 +47,8 @@ function HomePage() {
           <p>{car.color}</p>
         </div>
       ))}
-    </div>
+    </Wrapper>
   );
 }
 
-export default HomePage;
+export default GaragePage;
