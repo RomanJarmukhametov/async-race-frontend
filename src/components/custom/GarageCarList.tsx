@@ -1,6 +1,7 @@
 import React from 'react';
 import BodyText from '@/components/custom/BodyText';
 import CarIcon from '@/components/custom/CarIcon';
+import CarEdit from '@/components/custom/CarEdit';
 import CarProps from '@/types/CarProps';
 
 interface GarageCarListProps {
@@ -22,7 +23,13 @@ function GarageCarList({ cars }: GarageCarListProps) {
             <BodyText size="medium">{car.id}</BodyText>
           </div>
           <div className="col-span-1">
-            <BodyText size="medium">{car.name}</BodyText>
+            <div className="flex items-center justify-start space-x-4">
+              <BodyText size="medium">{car.name}</BodyText>
+              <CarEdit
+                carId={car.id}
+                name={car.name}
+              />
+            </div>
           </div>
           <div className="col-span-1">
             <BodyText size="medium">controls</BodyText>
