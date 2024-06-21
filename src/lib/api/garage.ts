@@ -25,7 +25,11 @@ const getCars = async (page = 1, limit = 7) => {
         _page: page,
         _limit: limit,
       },
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
     });
+
     return {
       data: response.data,
       totalCount: response.headers['x-total-count'],
