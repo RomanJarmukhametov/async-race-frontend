@@ -7,16 +7,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-import BodyText from '@/components/custom/BodyText';
-
 import EditIcon from '@/components/custom/EditIcon';
+import CarEditProps from '@/types/CarEditProps';
+import CarEditForm from '@/components/custom/CarEditForm';
 
-interface CarEditProps {
-  carId: number;
-  name: string;
-}
+function CarEdit({ carId, name, color }: CarEditProps) {
+  const handleSubmit = (data: { name: string; color: string }) => {
+    // Handle form submission
+    console.log('Form submitted:', data);
+  };
 
-function CarEdit({ carId, name }: CarEditProps) {
   return (
     <Dialog>
       <DialogTrigger>
@@ -26,7 +26,11 @@ function CarEdit({ carId, name }: CarEditProps) {
         <DialogHeader>
           <DialogTitle>Car ID: {carId}</DialogTitle>
           <DialogDescription>
-            <BodyText size="medium">{name}</BodyText>
+            <CarEditForm
+              name={name}
+              color={color}
+              onSubmit={handleSubmit}
+            />
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

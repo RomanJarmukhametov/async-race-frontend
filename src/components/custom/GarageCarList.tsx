@@ -23,11 +23,12 @@ function GarageCarList({ cars }: GarageCarListProps) {
             <BodyText size="medium">{car.id}</BodyText>
           </div>
           <div className="col-span-1">
-            <div className="flex items-center justify-start space-x-4">
+            <div className="px-2 flex items-center justify-between space-x-4">
               <BodyText size="medium">{car.name}</BodyText>
               <CarEdit
                 carId={car.id}
                 name={car.name}
+                color={car.color}
               />
             </div>
           </div>
