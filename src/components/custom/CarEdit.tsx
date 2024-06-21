@@ -16,10 +16,7 @@ import CarEditProps from '@/types/CarEditProps';
 import CarEditForm from '@/components/custom/CarEditForm';
 
 function CarEdit({ carId, name, color }: CarEditProps) {
-  const handleSubmit = (data: { name: string; color: string }) => {
-    // Handle form submission
-    console.log('Form submitted:', data);
-  };
+  const handleSubmit = () => {};
 
   /* The code snippet `const [isDialogOpen, setIsDialogOpen] = useState(false);` is using the `useState`
  hook from React to manage the state of a dialog in a functional component. */
