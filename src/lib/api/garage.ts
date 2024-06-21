@@ -25,9 +25,6 @@ const getCars = async (page = 1, limit = 7) => {
         _page: page,
         _limit: limit,
       },
-      headers: {
-        'Cache-Control': 'no-cache',
-      },
     });
 
     return {
@@ -40,9 +37,32 @@ const getCars = async (page = 1, limit = 7) => {
   }
 };
 
+/**
+ * The `updateCar` function asynchronously updates a car in the garage using PUT request with the
+ * provided data.
+ * @param {number} id - The `id` parameter in the `updateCar` function is a number that represents the
+ * unique identifier of the car that you want to update in the garage.
+ * @param {CarProps} data - The `data` parameter in the `updateCar` function refers to an object
+ * containing properties of a car that you want to update. This object should have the following
+ * structure based on the `CarProps` type:
+ * @returns The function `updateCar` is returning the data from the response of the PUT request made to
+ * the API endpoint `/garage/` with the provided `data`.
+ */
+const updateCar = async (id: number, name: string, color: string) => {
+  const response = await apiClient.put(`/garage/${id}`, { name, color });
+  return response.data;
+};
+
+/**
+ * The `getCarById` function asynchronously fetches a car from the garage by its ID.
+ * @param {number} id - The `id` parameter in the `getCarById` function is a number that represents the
+ * unique identifier of the car that you want to fetch from the garage.
+ * @returns The function `getCarById` is returning the data from the response of the GET request made to
+ * the API endpoint `/garage/` with the provided `id`.
+ */
 const getCarById = async (id: number) => {
   const response = await apiClient.get(`/garage/${id}`);
   return response.data;
 };
 
-export { getCars, getCarById };
+export { getCars, getCarById, updateCar };

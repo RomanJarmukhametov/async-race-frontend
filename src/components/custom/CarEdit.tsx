@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 import {
   Dialog,
   DialogContent,
@@ -17,8 +21,16 @@ function CarEdit({ carId, name, color }: CarEditProps) {
     console.log('Form submitted:', data);
   };
 
+  /* The code snippet `const [isDialogOpen, setIsDialogOpen] = useState(false);` is using the `useState`
+ hook from React to manage the state of a dialog in a functional component. */
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const closeDialog = () => setIsDialogOpen(false);
+
   return (
-    <Dialog>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
+    >
       <DialogTrigger>
         <EditIcon />
       </DialogTrigger>
@@ -27,9 +39,11 @@ function CarEdit({ carId, name, color }: CarEditProps) {
           <DialogTitle>Car ID: {carId}</DialogTitle>
           <DialogDescription>
             <CarEditForm
+              id={carId}
               name={name}
               color={color}
               onSubmit={handleSubmit}
+              onClose={closeDialog}
             />
           </DialogDescription>
         </DialogHeader>

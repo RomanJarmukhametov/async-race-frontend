@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,6 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import { updateCar } from '@/lib/api/garage';
+
 const FormSchema = z.object({
   name: z.string().min(2, {
     message: 'Name must be at least 2 characters.',
@@ -23,12 +26,24 @@ const FormSchema = z.object({
 });
 
 interface CarEditFormProps {
+  id: number;
   name: string;
   color: string;
   onSubmit: (data: z.infer<typeof FormSchema>) => void;
+  onClose: () => void;
 }
 
-function CarForm({ name, color, onSubmit }: CarEditFormProps) {
+function CarForm({ id, name, color, onSubmit, onClose }: CarEditFormProps) {
+  const router = useRouter();
+
+  // Add closing the dialog and refreshing the /garage page on submit
+  const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
+    await updateCar(id, data.name, data.color);
+    onSubmit(data);
+    onClose();
+    router.refresh();
+  };
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -40,7 +55,7 @@ function CarForm({ name, color, onSubmit }: CarEditFormProps) {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="w-full space-y-6"
       >
         <FormField
@@ -51,7 +66,7 @@ function CarForm({ name, color, onSubmit }: CarEditFormProps) {
               <FormLabel>Car Name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="shadcn"
+                  placeholder="Enter car name"
                   {...field}
                 />
               </FormControl>
@@ -74,7 +89,12 @@ function CarForm({ name, color, onSubmit }: CarEditFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          disabled={!form.formState.isValid}
+        >
+          Submit
+        </Button>
       </form>
     </Form>
   );
