@@ -1,33 +1,41 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import Wrapper from '@/components/custom/Wrapper';
 import Heading from '@/components/custom/Heading';
 import BodyText from '@/components/custom/BodyText';
 import GarageCarList from '@/components/custom/GarageCarList';
+import PaginationComponent from '@/components/custom/PaginationComponent';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+const CARS_PER_PAGE = 7;
 
-const fetcher = () => getCars(2);
+const fetcher = (page: number) => getCars(page, CARS_PER_PAGE);
 
 function GaragePage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    setCurrentPage(page);
+  }, [searchParams]);
+
   const { data, error, isLoading } = useSWR<{
     data: CarProps[];
     totalCount: number;
-  }>('/garage', fetcher, {
+  }>(`/garage?page=${currentPage}`, () => fetcher(currentPage), {
     refreshInterval: 1000,
   });
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    router.push(`/garage?page=${page}`);
+  };
 
   if (!data) {
     return (
@@ -46,44 +54,21 @@ function GaragePage() {
   }
 
   if (error) {
-    return <div>Failed to fetch cars</div>;
+    return <div>{error.message}</div>;
   }
+
+  const totalPages = Math.ceil(data.totalCount / CARS_PER_PAGE);
 
   return (
     <Wrapper as="section">
       <Heading level="1">Garage</Heading>
       <BodyText size="large">Total cars: {data.totalCount}</BodyText>
       <GarageCarList cars={data.data} />
-
-      <div className="fixed bottom-5 left-0 right-0 bg-white">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink
-                href="#"
-                isActive
-              >
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Wrapper>
   );
 }
