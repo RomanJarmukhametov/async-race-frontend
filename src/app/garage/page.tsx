@@ -9,7 +9,17 @@ import GarageCarList from '@/components/custom/GarageCarList';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
-const fetcher = () => getCars();
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+
+const fetcher = () => getCars(2);
 
 function GaragePage() {
   const { data, error, isLoading } = useSWR<{
@@ -44,6 +54,36 @@ function GaragePage() {
       <Heading level="1">Garage</Heading>
       <BodyText size="large">Total cars: {data.totalCount}</BodyText>
       <GarageCarList cars={data.data} />
+
+      <div className="fixed bottom-5 left-0 right-0 bg-white">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">1</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                href="#"
+                isActive
+              >
+                2
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#">3</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </Wrapper>
   );
 }

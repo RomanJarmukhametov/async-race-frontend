@@ -22,8 +22,8 @@ function GarageCarList({ cars }: GarageCarListProps) {
           <div className="col-span-1">
             <BodyText size="medium">{car.id}</BodyText>
           </div>
-          <div className="col-span-1">
-            <div className="px-2 flex items-center justify-between space-x-4">
+          <div className="col-span-2">
+            <div className="px-2 flex items-center lg:justify-between space-x-4">
               <BodyText size="medium">{car.name}</BodyText>
               <CarEdit
                 carId={car.id}
@@ -35,7 +35,7 @@ function GarageCarList({ cars }: GarageCarListProps) {
           <div className="col-span-1">
             <BodyText size="medium">controls</BodyText>
           </div>
-          <div className="px-2 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-9 flex items-center justify-start space-x-4 border-l-2 border-r-2 border-gray-200">
+          <div className="px-2 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-8 flex items-center justify-start space-x-4 border-l-2 border-r-2 border-gray-200">
             <CarIcon color={car.color} />
           </div>
         </div>
