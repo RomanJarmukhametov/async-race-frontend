@@ -3,6 +3,7 @@ import BodyText from '@/components/custom/BodyText';
 import CarIcon from '@/components/custom/CarIcon';
 import CarDelete from '@/components/custom/CarDelete';
 import CarEdit from '@/components/custom/CarEdit';
+import EngineControl from '@/components/custom/EngineControl';
 import CarProps from '@/types/CarProps';
 
 interface GarageCarListProps {
@@ -40,7 +41,10 @@ function GarageCarList({ cars }: GarageCarListProps) {
             </div>
           </div>
           <div className="col-span-1">
-            <BodyText size="medium">controls</BodyText>
+            <EngineControl
+              carId={car.id}
+              name={car.name}
+            />
           </div>
           <div className="px-2 col-span-1 sm:col-span-2 md:col-span-3 lg:col-span-8 flex items-center justify-start space-x-4 border-l-2 border-r-2 border-gray-200">
             <CarIcon color={car.color} />
