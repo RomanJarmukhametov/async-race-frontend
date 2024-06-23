@@ -11,8 +11,8 @@ The application is deployed on Vercel. You can access it [here](#).
 ## Checklist and Score
 
 - [ ] **Deployment Platform:** Successfully deploy the UI on one of the following platforms: GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a similar service.
-- [ ] **Commit guidelines compliance:** Ensure that all commits follow the specified commit guidelines.
-- [ ] **Checklist included in README.md:** Include the project's checklist in the README.md file. Mark all implemented features.
+- [x] **Commit guidelines compliance:** Ensure that all commits follow the specified commit guidelines.
+- [x] **Checklist included in README.md:** Include the project's checklist in the README.md file. Mark all implemented features.
 - [ ] **Score calculation:** Use this checklist to calculate your score and put it at the top of the README.md.
 - [ ] **UI Deployment link in README.md**: Place the link to the deployed UI at the top of the README.md file, alongside the calculated score.
 
@@ -47,7 +47,7 @@ The application is deployed on Vercel. You can access it [here](#).
 - [x] **Two Views (10 points):** Implement two primary views: "Garage" and "Winners".
 - [x] **Garage View Content (5 points):** The "Garage" view must display its name, the current page number, and the total number of cars in the database (how many car user has in his garage).
 - [ ] **Winners View Content (5 points):** The "Winners" view should similarly display its name, the current page number, and the total count of records in the database (how many records the winners table contains).
-- [ ] **Persistent State (10 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
+- [x] **Persistent State (10 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
 
 ### 2. Garage View Functionality (55 points)
 
@@ -55,7 +55,7 @@ The application is deployed on Vercel. You can access it [here](#).
 
 - [ ] **CRUD Operations (20 points):** Enable users to create, update, and delete cars, and display the list of cars. A car has two attributes: "name" and "color". For "delete"-operation car should be deleted from "garage" table as well as from "winners".
 - [x] **Color Selection (10 points):** Allow color selection from an RGB palette ([like here](https://colorspire.com/rgb-color-wheel/)), displaying the selected color on the car's image along with its name.
-- [ ] **Management Buttons (5 points):** Provide buttons near each car's image for updating its attributes or deleting it.
+- [x] **Management Buttons (5 points):** Provide buttons near each car's image for updating its attributes or deleting it.
 - [x] **Pagination (10 points):** Implement pagination for the "Garage" view, displaying 7 cars per page.
 
 #### Car Generation (10 points)
