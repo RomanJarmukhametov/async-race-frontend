@@ -54,6 +54,18 @@ const updateCar = async (id: number, name: string, color: string) => {
 };
 
 /**
+ * The function `deleteCar` asynchronously deletes a car from the garage using the provided `id`.
+ * @param {number} id - The `id` parameter in the `deleteCar` function is a number that represents the
+ * unique identifier of the car that needs to be deleted from the garage.
+ * @returns The function `deleteCar` is returning the data from the response of the DELETE request made
+ * to the API endpoint `/garage/`.
+ */
+const deleteCar = async (id: number) => {
+  const response = await apiClient.delete(`/garage/${id}`);
+  return response.data;
+};
+
+/**
  * The `getCarById` function asynchronously fetches a car from the garage by its ID.
  * @param {number} id - The `id` parameter in the `getCarById` function is a number that represents the
  * unique identifier of the car that you want to fetch from the garage.
@@ -65,4 +77,4 @@ const getCarById = async (id: number) => {
   return response.data;
 };
 
-export { getCars, getCarById, updateCar };
+export { getCars, getCarById, updateCar, deleteCar };

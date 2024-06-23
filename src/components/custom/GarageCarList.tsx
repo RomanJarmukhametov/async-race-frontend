@@ -1,6 +1,7 @@
 import React from 'react';
 import BodyText from '@/components/custom/BodyText';
 import CarIcon from '@/components/custom/CarIcon';
+import CarDelete from '@/components/custom/CarDelete';
 import CarEdit from '@/components/custom/CarEdit';
 import CarProps from '@/types/CarProps';
 
@@ -25,11 +26,17 @@ function GarageCarList({ cars }: GarageCarListProps) {
           <div className="col-span-2">
             <div className="px-2 flex items-center lg:justify-between space-x-4">
               <BodyText size="medium">{car.name}</BodyText>
-              <CarEdit
-                carId={car.id}
-                name={car.name}
-                color={car.color}
-              />
+              <div className="flex items-center space-x-4">
+                <CarDelete
+                  carId={car.id}
+                  name={car.name}
+                />
+                <CarEdit
+                  carId={car.id}
+                  name={car.name}
+                  color={car.color}
+                />
+              </div>
             </div>
           </div>
           <div className="col-span-1">
