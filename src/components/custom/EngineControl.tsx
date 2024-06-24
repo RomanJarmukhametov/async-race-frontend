@@ -1,25 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import StartIcon from '@/components/custom/StartIcon';
 import StopIcon from '@/components/custom/StopIcon';
 import CarEngine from '@/types/CarEngine';
 import { startEngine, stopEngine } from '@/lib/api/engine';
+import Toast from '@/components/custom/Toast';
 
-// Simple Toast Component
-function Toast({ message, onClose }: { message: string; onClose: () => void }) {
-  useEffect(() => {
-    const timer = setTimeout(onClose, 2000); // Hide toast after 3 seconds
-    return () => clearTimeout(timer);
-  }, [onClose]);
-
-  return (
-    <div className="fixed bottom-20 right-5 bg-black text-white p-2 rounded">
-      {message}
-    </div>
-  );
-}
-
+/* The `EngineControl` function is a React component that controls the engine of a car. Here's a
+breakdown of what it does: */
 function EngineControl({ carId, name }: CarEngine) {
   const [isStarted, setIsStarted] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -29,11 +18,9 @@ function EngineControl({ carId, name }: CarEngine) {
     if (!isStarted) {
       startEngine(carId);
       setToastMessage(`Engine started for ${name}`);
-      console.log('started');
     } else {
       stopEngine(carId);
       setToastMessage(`Engine stopped for ${name}`);
-      console.log('stopped');
     }
   };
   const icon = isStarted ? <StopIcon /> : <StartIcon />;

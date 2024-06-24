@@ -40,7 +40,7 @@ function GarageCarList({ cars }: GarageCarListProps) {
               </div>
             </div>
           </div>
-          <div className="col-span-1">
+          <div className="px-2 col-span-1 border-l-2 border-gray-200">
             <EngineControl
               carId={car.id}
               name={car.name}
