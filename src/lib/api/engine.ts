@@ -18,7 +18,8 @@ const apiClient = axios.create({
  */
 const startEngine = async (id: number) => {
   const response = await apiClient.patch(`/engine?id=${id}&status=started`);
-  return response.data;
+  const { velocity, distance } = response.data;
+  return { velocity, distance };
 };
 
 /**
@@ -31,7 +32,8 @@ const startEngine = async (id: number) => {
  */
 const stopEngine = async (id: number) => {
   const response = await apiClient.patch(`/engine?id=${id}&status=stopped`);
-  return response.data;
+  const { velocity, distance } = response.data;
+  return { velocity, distance };
 };
 
 export { startEngine, stopEngine };
