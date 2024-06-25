@@ -77,4 +77,19 @@ const getCarById = async (id: number) => {
   return response.data;
 };
 
-export { getCars, getCarById, updateCar, deleteCar };
+/**
+ * The function createCar asynchronously sends a POST request to the '/garage' endpoint with the
+ * provided name and color parameters.
+ * @param {string} name - The `name` parameter in the `createCar` function represents the name of the
+ * car that will be created in the garage.
+ * @param {string} color - Color is a parameter that represents the color of the car being created. It
+ * is a string value that specifies the color of the car, such as "red", "blue", "green", etc.
+ * @returns The `createCar` function is returning the data from the response of the POST request made
+ * to the `/garage` endpoint with the provided `name` and `color` parameters.
+ */
+const createCar = async (name: string, color: string) => {
+  const response = await apiClient.post('/garage', { name, color });
+  return response.data;
+};
+
+export { getCars, getCarById, updateCar, deleteCar, createCar };
