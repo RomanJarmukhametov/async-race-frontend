@@ -36,4 +36,11 @@ const stopEngine = async (id: number) => {
   return { velocity, distance };
 };
 
-export { startEngine, stopEngine };
+// Function setDriveMode. If response is OK, it should return object { "success": true }, otherwise return an error
+const setDriveMode = async (id: number) => {
+  const response = await apiClient.patch(`/engine?id=${id}&status=drive`);
+  const { success } = response.data;
+  return { success };
+};
+
+export { startEngine, stopEngine, setDriveMode };
