@@ -19,6 +19,7 @@ interface TableRowProps {
 interface TableCellProps {
   children: ReactNode;
   isHeader?: boolean;
+  onClick?: () => void;
 }
 
 export function Table({ children }: TableProps): JSX.Element {
@@ -54,12 +55,14 @@ export function TableRow({ children }: TableRowProps): JSX.Element {
 export function TableCell({
   children,
   isHeader = false,
+  onClick,
 }: TableCellProps): JSX.Element {
   if (isHeader) {
     return (
       <th
         scope="col"
         className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        onClick={onClick}
       >
         {children}
       </th>

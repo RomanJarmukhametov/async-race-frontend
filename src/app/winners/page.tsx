@@ -28,6 +28,12 @@ function Winners() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortField, setSortField] = useState<'wins' | 'time' | undefined>(
+    undefined
+  );
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC' | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const page = parseInt(searchParams.get('page') || '1', 10);
@@ -37,13 +43,23 @@ function Winners() {
   const { data, error, isLoading } = useSWR<{
     data: GetWinnersParams[];
     totalCount: number;
-  }>(`/winners?page=${currentPage}`, () => fetcher(currentPage), {
-    refreshInterval: 5000,
-  });
+  }>(
+    `/winners?page=${currentPage}&sort=${sortField}&order=${sortOrder}`,
+    () => fetcher(currentPage),
+    {
+      refreshInterval: 5000,
+    }
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     router.push(`/winners?page=${page}`);
+  };
+
+  const handleSortChange = (field: 'wins' | 'time') => {
+    const newOrder = sortOrder === 'ASC' ? 'DESC' : 'ASC';
+    setSortField(field);
+    setSortOrder(newOrder);
   };
 
   if (!data) {
@@ -74,7 +90,12 @@ function Winners() {
       <div className="flex flex-row items-center justify-between">
         <BodyText size="large">Total winners: {data.totalCount}</BodyText>
       </div>
-      <WinnersCarList winners={data.data} />
+      <WinnersCarList
+        winners={data.data}
+        onSortChange={handleSortChange}
+        sortField={sortField}
+        sortOrder={sortOrder}
+      />
 
       <PaginationComponent
         currentPage={currentPage}
