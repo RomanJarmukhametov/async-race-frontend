@@ -25,14 +25,12 @@ function GenerateCars() {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center gap-4 mt-4">
-      <Button
-        variant="outline"
-        onClick={handleGenerateCars}
-      >
-        Generate {NUMBER_OF_CARS_TO_BE_GENERATED_AT_ONCE} Cars
-      </Button>
-    </div>
+    <Button
+      variant="outline"
+      onClick={handleGenerateCars}
+    >
+      Generate {NUMBER_OF_CARS_TO_BE_GENERATED_AT_ONCE} Cars
+    </Button>
   );
 }
 

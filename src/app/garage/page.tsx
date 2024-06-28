@@ -9,6 +9,7 @@ import BodyText from '@/components/custom/BodyText';
 import GarageCarList from '@/components/custom/GarageCarList';
 import PaginationComponent from '@/components/custom/PaginationComponent';
 import GenerateCars from '@/components/custom/GenerateCars';
+import StartRace from '@/components/custom/StartRace';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
@@ -65,7 +66,10 @@ function GaragePage() {
       <Heading level="1">Garage</Heading>
       <div className="flex flex-row items-center justify-between">
         <BodyText size="large">Total cars: {data.totalCount}</BodyText>
-        <GenerateCars />
+        <div className="flex flex-row items-center justify-between gap-4">
+          <GenerateCars />
+          <StartRace />
+        </div>
       </div>
 
       <GarageCarList cars={data.data} />
