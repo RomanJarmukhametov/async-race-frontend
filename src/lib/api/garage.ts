@@ -18,7 +18,7 @@ const apiClient = axios.create({
  * calling the function, it will retrieve up to 7 cars per page. This limit helps in controlling
  * the amount of data returned from the API.
  */
-const getCars = async (page: number, limit = 7) => {
+const getCars = async (page: number, limit: number) => {
   try {
     const response = await apiClient.get(`/garage`, {
       params: {
