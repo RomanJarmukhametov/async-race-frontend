@@ -7,13 +7,7 @@ import Wrapper from '@/components/custom/Wrapper';
 import Heading from '@/components/custom/Heading';
 import BodyText from '@/components/custom/BodyText';
 import WinnersCarList from '@/components/custom/WinnersCarList';
-import {
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from '@/components/custom/Table';
+import PaginationComponent from '@/components/custom/PaginationComponent';
 import { getWinners } from '@/lib/api/winners';
 import GetWinnersParams from '@/types/GetWinnersParams';
 
@@ -23,9 +17,9 @@ const fetcher = (page: number) => {
   const params: GetWinnersParams = {
     page,
     limit: WINNERS_PER_PAGE,
-    id: '',
+    id: 0,
     wins: 0,
-    time: '',
+    time: 0,
   };
   return getWinners(params);
 };
@@ -81,6 +75,12 @@ function Winners() {
         <BodyText size="large">Total winners: {data.totalCount}</BodyText>
       </div>
       <WinnersCarList winners={data.data} />
+
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </Wrapper>
   );
 }

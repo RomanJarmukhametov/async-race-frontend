@@ -33,4 +33,11 @@ const getWinners = async ({ page, limit, sort, order }: GetWinnersParams) => {
   }
 };
 
-export { getWinners };
+/* This function is used to delete a winner from the server. It takes an id as an argument and returns a promise that resolves to an object containing the winners data and the
+total count of winners. */
+const deleteWinner = async (id: number) => {
+  const response = await apiClient.delete(`/winners/${id}`);
+  return response.data;
+};
+
+export { getWinners, deleteWinner };

@@ -8,7 +8,7 @@ interface GetWinnersParams {
   order?: 'ASC' | 'DESC';
   id: number;
   wins: number;
-  time: string;
+  time: number;
 }
 
 export default GetWinnersParams;

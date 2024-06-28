@@ -7,6 +7,8 @@ import {
   TableCell,
 } from '@/components/custom/Table';
 
+import WinnerDelete from '@/components/custom/WinnerDelete';
+
 import GetWinnersParams from '@/types/GetWinnersParams';
 
 function WinnersCarList({ winners }: { winners: GetWinnersParams[] }) {
@@ -26,6 +28,9 @@ function WinnersCarList({ winners }: { winners: GetWinnersParams[] }) {
             <TableCell>{winner.id}</TableCell>
             <TableCell>{winner.wins}</TableCell>
             <TableCell>{winner.time}</TableCell>
+            <TableCell>
+              <WinnerDelete carId={winner.id} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

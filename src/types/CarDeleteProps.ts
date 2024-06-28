@@ -1,6 +1,6 @@
 interface CarDeleteProps {
   carId: number;
-  name: string;
+  name?: string;
 }
 
 export default CarDeleteProps;
