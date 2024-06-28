@@ -1,31 +1,16 @@
-import React, { ReactNode } from 'react';
-
-interface TableProps {
-  children: ReactNode;
-}
-
-interface TableHeadProps {
-  children: ReactNode;
-}
-
-interface TableBodyProps {
-  children: ReactNode;
-}
-
-interface TableRowProps {
-  children: ReactNode;
-}
-
-interface TableCellProps {
-  children: ReactNode;
-  isHeader?: boolean;
-  onClick?: () => void;
-}
+import React from 'react';
+import {
+  TableProps,
+  TableHeadProps,
+  TableBodyProps,
+  TableRowProps,
+  TableCellProps,
+} from '@/types/TableProps';
 
 export function Table({ children }: TableProps): JSX.Element {
   return (
     <div className="relative overflow-x-auto">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table className="w-full text-base text-left rtl:text-right text-gray-500">
         {children}
       </table>
     </div>
@@ -34,7 +19,7 @@ export function Table({ children }: TableProps): JSX.Element {
 
 export function TableHead({ children }: TableHeadProps): JSX.Element {
   return (
-    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <thead className="text-base text-gray-500 uppercase bg-gray-50">
       {children}
     </thead>
   );
@@ -45,11 +30,7 @@ export function TableBody({ children }: TableBodyProps): JSX.Element {
 }
 
 export function TableRow({ children }: TableRowProps): JSX.Element {
-  return (
-    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-      {children}
-    </tr>
-  );
+  return <tr className="bg-white border-b">{children}</tr>;
 }
 
 export function TableCell({
@@ -61,7 +42,7 @@ export function TableCell({
     return (
       <th
         scope="col"
-        className="px-6 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+        className="px-6 py-3 font-medium text-gray-500 whitespace-nowrap"
         onClick={onClick}
       >
         {children}
