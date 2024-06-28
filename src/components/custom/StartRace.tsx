@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import Toast from '@/components/custom/Toast';
 
 // Function to get cars with driveMode set to true
 function getCarsInDriveMode(): { id: number; velocity: number }[] {
@@ -30,20 +31,35 @@ function StartRace() {
     { id: number; velocity: number }[]
   >([]);
 
+  const [toastMessage, setToastMessage] = useState('');
+
   const handleStartRace = () => {
     const cars = getCarsInDriveMode();
     setCarsInDriveMode(cars);
+    if (cars.length === 0) {
+      setToastMessage('No cars in drive mode');
+    } else {
+      setToastMessage('Race started');
+    }
     console.log(cars); // This will log the array of cars in drive mode to the console
     // You can add more logic here to start the race using the cars array
   };
 
   return (
-    <Button
-      variant="outline"
-      onClick={handleStartRace}
-    >
-      Start Race
-    </Button>
+    <>
+      {toastMessage && (
+        <Toast
+          message={toastMessage}
+          onClose={() => setToastMessage('')}
+        />
+      )}
+      <Button
+        variant="outline"
+        onClick={handleStartRace}
+      >
+        Start Race
+      </Button>
+    </>
   );
 }
 
