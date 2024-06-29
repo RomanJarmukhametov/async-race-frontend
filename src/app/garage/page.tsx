@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { RaceProvider } from '@/context/RaceContext';
 import useSWR from 'swr';
 import Wrapper from '@/components/custom/Wrapper';
 import Heading from '@/components/custom/Heading';
@@ -62,23 +63,25 @@ function GaragePage() {
   const totalPages = Math.ceil(data.totalCount / CARS_PER_PAGE);
 
   return (
-    <Wrapper as="section">
-      <Heading level="1">Garage</Heading>
-      <div className="flex flex-row items-center justify-between">
-        <BodyText size="large">Total cars: {data.totalCount}</BodyText>
-        <div className="flex flex-row items-center justify-between gap-4">
-          <GenerateCars />
-          <StartRace />
+    <RaceProvider>
+      <Wrapper as="section">
+        <Heading level="1">Garage</Heading>
+        <div className="flex flex-row items-center justify-between">
+          <BodyText size="large">Total cars: {data.totalCount}</BodyText>
+          <div className="flex flex-row items-center justify-between gap-4">
+            <GenerateCars />
+            <StartRace />
+          </div>
         </div>
-      </div>
 
-      <GarageCarList cars={data.data} />
-      <PaginationComponent
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-      />
-    </Wrapper>
+        <GarageCarList cars={data.data} />
+        <PaginationComponent
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
+      </Wrapper>
+    </RaceProvider>
   );
 }
 

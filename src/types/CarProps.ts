@@ -5,6 +5,7 @@ interface CarProps {
   id: number;
   name: string;
   color: string;
+  raceStarted: boolean;
 }
 
 export default CarProps;

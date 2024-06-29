@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Toast from '@/components/custom/Toast';
+import { useRace } from '@/context/RaceContext';
 
 // Function to get cars with driveMode set to true
 function getCarsInDriveMode(): {
@@ -31,6 +32,7 @@ function getCarsInDriveMode(): {
 
 function StartRace() {
   const [toastMessage, setToastMessage] = useState('');
+  const { setRaceStarted, setCars } = useRace(); // Use the context
 
   const handleStartRace = () => {
     const cars = getCarsInDriveMode();
@@ -41,6 +43,8 @@ function StartRace() {
       setToastMessage('At least two cars are required to start a race');
     } else {
       setToastMessage('Race started');
+      setCars(cars); // Update the cars in context
+      setRaceStarted(true); // Update the raceStarted state in context
     }
     console.log(cars);
   };

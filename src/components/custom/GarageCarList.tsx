@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useRace } from '@/context/RaceContext';
 import CarIcon from '@/components/custom/CarIcon';
 import CarDelete from '@/components/custom/CarDelete';
 import CarEdit from '@/components/custom/CarEdit';
@@ -22,6 +22,7 @@ interface GarageCarListProps {
 type `GarageCarListProps`. Inside the function, it returns JSX code that iterates over the `cars`
 array using the `map` function to create a list of car elements. */
 function GarageCarList({ cars }: GarageCarListProps) {
+  const { raceStarted, cars: carsInDriveMode } = useRace();
   return (
     <div className="mt-6 space-y-4">
       <Table>
@@ -35,34 +36,54 @@ function GarageCarList({ cars }: GarageCarListProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {cars.map((car) => (
-            <TableRow key={car.id}>
-              <TableCell>{car.id}</TableCell>
-              <TableCell>{car.name}</TableCell>
-              <TableCell>
-                <div className="flex items-center space-x-4">
-                  <CarDelete
+          {cars.map((car) => {
+            const carInDriveMode = carsInDriveMode.find((c) => c.id === car.id);
+            const durationMs = carInDriveMode ? carInDriveMode.time * 1000 : 0;
+            const durationClass = carInDriveMode
+              ? `duration-[${durationMs}ms]`
+              : '';
+
+            // Log the duration for debugging
+            console.log(`Car ID: ${car.id}, Duration: ${durationMs}ms`);
+
+            return (
+              <TableRow key={car.id}>
+                <TableCell>{car.id}</TableCell>
+                <TableCell>{car.name}</TableCell>
+                <TableCell>
+                  <div className="flex items-center space-x-4">
+                    <CarDelete
+                      carId={car.id}
+                      name={car.name}
+                    />
+                    <CarEdit
+                      carId={car.id}
+                      name={car.name}
+                      color={car.color}
+                    />
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <EngineControl
                     carId={car.id}
                     name={car.name}
                   />
-                  <CarEdit
-                    carId={car.id}
-                    name={car.name}
+                </TableCell>
+                <TableCell className="relative">
+                  {' '}
+                  {/* Set custom width and relative positioning */}
+                  <CarIcon
                     color={car.color}
+                    className={`absolute left-0 ${
+                      raceStarted && carInDriveMode
+                        ? `transform translate-x-[100%] ${durationClass}`
+                        : ''
+                    }`}
                   />
-                </div>
-              </TableCell>
-              <TableCell>
-                <EngineControl
-                  carId={car.id}
-                  name={car.name}
-                />
-              </TableCell>
-              <TableCell>
-                <CarIcon color={car.color} />
-              </TableCell>
-            </TableRow>
-          ))}
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
