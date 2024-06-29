@@ -23,6 +23,9 @@ type `GarageCarListProps`. Inside the function, it returns JSX code that iterate
 array using the `map` function to create a list of car elements. */
 function GarageCarList({ cars }: GarageCarListProps) {
   const { raceStarted, cars: carsInDriveMode } = useRace();
+  console.log('Race Started:', raceStarted);
+  console.log('Cars in Drive Mode:', carsInDriveMode);
+
   return (
     <div className="mt-6 space-y-4">
       <Table>
@@ -42,6 +45,10 @@ function GarageCarList({ cars }: GarageCarListProps) {
             const durationClass = carInDriveMode
               ? `duration-[${durationMs}ms]`
               : '';
+
+            const shouldMove = raceStarted && !!carInDriveMode;
+            console.log(`Car ${car.id} duration: ${durationClass}`);
+            console.log(`Car ${car.id} moving: ${shouldMove}`);
 
             return (
               <TableRow key={car.id}>
@@ -66,13 +73,11 @@ function GarageCarList({ cars }: GarageCarListProps) {
                     name={car.name}
                   />
                 </TableCell>
-                <TableCell className="relative">
+                <TableCell className="relative bg-gray-300">
                   <CarIcon
                     color={car.color}
-                    className={`absolute left-0 ${
-                      raceStarted && carInDriveMode
-                        ? `translate-x-full ${durationClass}`
-                        : ''
+                    className={`absolute left-0 border border-red-500 bg-yellow-200 transition-transform ${
+                      shouldMove ? `translate-x-full ${durationClass}` : ''
                     }`}
                   />
                 </TableCell>
