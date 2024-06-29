@@ -43,9 +43,6 @@ function GarageCarList({ cars }: GarageCarListProps) {
               ? `duration-[${durationMs}ms]`
               : '';
 
-            // Log the duration for debugging
-            console.log(`Car ID: ${car.id}, Duration: ${durationMs}ms`);
-
             return (
               <TableRow key={car.id}>
                 <TableCell>{car.id}</TableCell>
@@ -70,13 +67,11 @@ function GarageCarList({ cars }: GarageCarListProps) {
                   />
                 </TableCell>
                 <TableCell className="relative">
-                  {' '}
-                  {/* Set custom width and relative positioning */}
                   <CarIcon
                     color={car.color}
                     className={`absolute left-0 ${
                       raceStarted && carInDriveMode
-                        ? `transform translate-x-[100%] ${durationClass}`
+                        ? `translate-x-full ${durationClass}`
                         : ''
                     }`}
                   />

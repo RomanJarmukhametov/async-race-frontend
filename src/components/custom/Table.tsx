@@ -10,7 +10,7 @@ import {
 export function Table({ children }: TableProps): JSX.Element {
   return (
     <div className="relative overflow-x-auto">
-      <table className="w-full text-base text-left rtl:text-right text-gray-500">
+      <table className="w-full text-base text-left rtl:text-right text-gray-500 table-auto">
         {children}
       </table>
     </div>
