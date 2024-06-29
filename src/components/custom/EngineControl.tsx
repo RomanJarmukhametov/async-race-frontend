@@ -19,6 +19,10 @@ function EngineControl({ carId, name }: CarEngine) {
     const savedVelocity = localStorage.getItem(`${carId}-engineVelocity`);
     return savedVelocity ? JSON.parse(savedVelocity) : 0;
   });
+  const [timeInSeconds, setTimeInSeconds] = useState<number>(() => {
+    const savedTime = localStorage.getItem(`${carId}-timeInSeconds`);
+    return savedTime ? JSON.parse(savedTime) : 0;
+  });
   const [carDriveMode, setCarDriveMode] = useState<boolean>(() => {
     const savedDriveMode = localStorage.getItem(`${carId}-driveMode`);
     return savedDriveMode ? JSON.parse(savedDriveMode) : false;
@@ -33,7 +37,11 @@ function EngineControl({ carId, name }: CarEngine) {
     localStorage.setItem(`${carId}-engineStatus`, JSON.stringify(isStarted));
     localStorage.setItem(`${carId}-engineVelocity`, JSON.stringify(velocity));
     localStorage.setItem(`${carId}-driveMode`, JSON.stringify(carDriveMode));
-  }, [isStarted, velocity, carId, carDriveMode]);
+    localStorage.setItem(
+      `${carId}-timeInSeconds`,
+      JSON.stringify(timeInSeconds)
+    );
+  }, [isStarted, velocity, carId, carDriveMode, timeInSeconds]);
 
   /**
    * The function `toggleEngine` asynchronously starts or stops the engine of a car based on its current
@@ -43,9 +51,13 @@ function EngineControl({ carId, name }: CarEngine) {
     setIsStarted(!isStarted);
     if (!isStarted) {
       try {
-        const { velocity: newVelocity } = await startEngine(carId);
+        const { velocity: newVelocity, distance: newDistance } =
+          await startEngine(carId);
         setVelocity(newVelocity);
         setToastMessage(`Engine started for ${name}`);
+        const timeInMs = newDistance / newVelocity;
+        const timeInSec = timeInMs / 1000;
+        setTimeInSeconds(parseFloat(timeInSec.toFixed(2)));
       } catch (error) {
         console.error('Failed to start engine:', error);
         setToastMessage('Failed to start engine');
@@ -54,6 +66,7 @@ function EngineControl({ carId, name }: CarEngine) {
       try {
         await stopEngine(carId);
         setVelocity(0);
+        setTimeInSeconds(0);
         setToastMessage(`Engine stopped for ${name}`);
       } catch (error) {
         console.error('Failed to stop engine:', error);
