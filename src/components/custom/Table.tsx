@@ -37,17 +37,29 @@ export function TableCell({
   children,
   isHeader = false,
   onClick,
+  width,
+  className,
 }: TableCellProps): JSX.Element {
+  const style = width ? { width } : {};
+
   if (isHeader) {
     return (
       <th
         scope="col"
-        className="px-6 py-3 font-medium text-gray-500 whitespace-nowrap"
+        className="px-6 py-3 font-medium text-gray-500 whitespace-nowrap border-[1px] border-gray-200"
         onClick={onClick}
+        style={style} // Apply width style
       >
         {children}
       </th>
     );
   }
-  return <td className="px-6 py-4">{children}</td>;
+  return (
+    <td
+      className={`px-6 py-4 ${className}`}
+      style={style}
+    >
+      {children}
+    </td>
+  );
 }

@@ -20,6 +20,8 @@ interface TableCellProps {
   children: ReactNode;
   isHeader?: boolean;
   onClick?: () => void;
+  width?: string;
+  className?: string;
 }
 
 export type {
