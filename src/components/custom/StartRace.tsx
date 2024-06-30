@@ -3,6 +3,11 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import Toast from '@/components/custom/Toast';
+import {
+  createWinner,
+  updateWinner,
+  getWinnerByCarId,
+} from '@/lib/api/winners';
 import { useRace } from '@/context/RaceContext';
 
 // Function to get cars with driveMode set to true
@@ -34,7 +39,7 @@ function StartRace() {
   const [toastMessage, setToastMessage] = useState('');
   const { setRaceStarted, setCars } = useRace(); // Use the context
 
-  const handleStartRace = () => {
+  const handleStartRace = async () => {
     const cars = getCarsInDriveMode();
 
     if (cars.length === 0) {
@@ -46,7 +51,34 @@ function StartRace() {
       setCars(cars); // Update the cars in context
       setRaceStarted(true); // Update the raceStarted state in context
     }
-    console.log(cars);
+    // Find the car with the minimal time
+    const winner = cars.reduce(
+      (min, car) => (car.time < min.time ? car : min),
+      cars[0]
+    );
+
+    /**
+     * This block of code is handling the logic for updating the winner of the race.
+     * Here's a breakdown of what it does:
+     */
+    try {
+      await createWinner({ id: winner.id, wins: 1, time: winner.time });
+    } catch {
+      try {
+        const existingWinner = await getWinnerByCarId(winner.id);
+        const updatedWins = existingWinner.wins + 1;
+        const bestTime = Math.min(existingWinner.time, winner.time);
+        await updateWinner({
+          id: winner.id,
+          wins: updatedWins,
+          time: bestTime,
+        });
+      } catch (error) {
+        console.error('Error updating winner:', error);
+      }
+    }
+
+    console.log(winner);
   };
 
   return (
