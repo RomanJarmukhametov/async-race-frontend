@@ -40,4 +40,34 @@ const deleteWinner = async (id: number) => {
   return response.data;
 };
 
-export { getWinners, deleteWinner };
+/* This function is used to create a winner on the server. It takes an object of type `Winner` as an argument and returns a promise that resolves to an object containing the winners data and the
+total count of winners. */
+const createWinner = async ({
+  id,
+  wins,
+  time,
+}: {
+  id: number;
+  wins: number;
+  time: number;
+}) => {
+  const response = await apiClient.post('/winners', { id, wins, time });
+  return response.data;
+};
+
+/* This function is used to update a winner on the server. It takes an object of type `Winner` as an argument and returns a promise that resolves to an object containing the winners data and the
+total count of winners. */
+const updateWinner = async ({
+  id,
+  wins,
+  time,
+}: {
+  id: number;
+  wins: number;
+  time: number;
+}) => {
+  const response = await apiClient.put(`/winners/${id}`, { wins, time });
+  return response.data;
+};
+
+export { getWinners, deleteWinner, createWinner, updateWinner };
