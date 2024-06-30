@@ -70,4 +70,15 @@ const updateWinner = async ({
   return response.data;
 };
 
-export { getWinners, deleteWinner, createWinner, updateWinner };
+const getWinnerByCarId = async (id: number) => {
+  const response = await apiClient.get(`/winners/${id}`);
+  return response.data;
+};
+
+export {
+  getWinners,
+  deleteWinner,
+  createWinner,
+  updateWinner,
+  getWinnerByCarId,
+};
