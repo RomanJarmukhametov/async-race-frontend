@@ -11,6 +11,7 @@ import GarageCarList from '@/components/custom/GarageCarList';
 import PaginationComponent from '@/components/custom/PaginationComponent';
 import GenerateCars from '@/components/custom/GenerateCars';
 import StartRace from '@/components/custom/StartRace';
+import ResetRace from '@/components/custom/ResetRace';
 import { getCars } from '@/lib/api/garage';
 import CarProps from '@/types/CarProps';
 
@@ -70,6 +71,7 @@ function GaragePage() {
           <BodyText size="large">Total cars: {data.totalCount}</BodyText>
           <div className="flex flex-row items-center justify-between gap-4">
             <GenerateCars />
+            <ResetRace />
             <StartRace />
           </div>
         </div>

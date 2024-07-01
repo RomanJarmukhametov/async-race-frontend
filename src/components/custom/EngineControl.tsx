@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import StartIcon from '@/components/custom/StartIcon';
 import StopIcon from '@/components/custom/StopIcon';
 import CarEngine from '@/types/CarEngine';
@@ -8,8 +8,10 @@ import { startEngine, stopEngine, setDriveMode } from '@/lib/api/engine';
 import Toast from '@/components/custom/Toast';
 import BodyText from '@/components/custom/BodyText';
 
-/* The `EngineControl` function is a React component that controls the engine of a car. Here's a
-breakdown of what it does: */
+/*  
+  This component is used to control the engine of a car and to display the velocity, drive mode, and time in seconds.
+  It uses the local storage to save the state of the engine and to persist it between page refreshes.
+*/
 function EngineControl({ carId, name }: CarEngine) {
   const [isStarted, setIsStarted] = useState<boolean>(() => {
     const savedStatus = localStorage.getItem(`${carId}-engineStatus`);
@@ -30,9 +32,7 @@ function EngineControl({ carId, name }: CarEngine) {
   const [toastMessage, setToastMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  /* The `useEffect` hook in the `EngineControl` component is responsible for saving the state of the
-  engine status, engine velocity, and drive mode of a car to the local storage whenever any of these
-  values change. */
+  // Save the state of the engine to local storage
   useEffect(() => {
     localStorage.setItem(`${carId}-engineStatus`, JSON.stringify(isStarted));
     localStorage.setItem(`${carId}-engineVelocity`, JSON.stringify(velocity));
@@ -43,12 +43,36 @@ function EngineControl({ carId, name }: CarEngine) {
     );
   }, [isStarted, velocity, carId, carDriveMode, timeInSeconds]);
 
-  /**
-   * The function `toggleEngine` asynchronously starts or stops the engine of a car based on its current
-   * state.
-   */
+  // Listen for changes in local storage
+  const handleStorageChange = useCallback(
+    (event: StorageEvent) => {
+      if (event.key === `${carId}-engineStatus`) {
+        setIsStarted(JSON.parse(event.newValue || 'false'));
+      }
+      if (event.key === `${carId}-engineVelocity`) {
+        setVelocity(JSON.parse(event.newValue || '0'));
+      }
+      if (event.key === `${carId}-driveMode`) {
+        setCarDriveMode(JSON.parse(event.newValue || 'false'));
+      }
+      if (event.key === `${carId}-timeInSeconds`) {
+        setTimeInSeconds(JSON.parse(event.newValue || '0'));
+      }
+    },
+    [carId]
+  );
+
+  // Add an event listener for storage changes
+  useEffect(() => {
+    window.addEventListener('storage', handleStorageChange);
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [handleStorageChange]);
+
+  // Toggle the engine start/stop
   const toggleEngine = async () => {
-    setIsStarted(!isStarted);
+    setIsStarted((prevIsStarted) => !prevIsStarted);
     if (!isStarted) {
       try {
         const { velocity: newVelocity, distance: newDistance } =
@@ -75,17 +99,14 @@ function EngineControl({ carId, name }: CarEngine) {
     }
   };
 
-  /**
-   * The function `toggleDriveMode` asynchronously toggles the drive mode of a car and handles success
-   * and error cases.
-   */
+  // Toggle the drive mode
   const toggleDriveMode = async () => {
     if (isStarted) {
       setIsLoading(true);
       try {
         const { success } = await setDriveMode(carId);
         if (success) {
-          setCarDriveMode(!carDriveMode);
+          setCarDriveMode((prevDriveMode) => !prevDriveMode);
           setToastMessage(
             `Drive mode ${!carDriveMode ? 'started' : 'stopped'} for ${name}`
           );
@@ -102,8 +123,6 @@ function EngineControl({ carId, name }: CarEngine) {
     }
   };
 
-  const icon = isStarted ? <StopIcon /> : <StartIcon />;
-
   return (
     <div>
       <div
@@ -115,14 +134,14 @@ function EngineControl({ carId, name }: CarEngine) {
         tabIndex={0}
         role="button"
       >
-        {/* Toggle between start and stop icons on click */}
-        {icon}
+        {isStarted ? <StopIcon /> : <StartIcon />}
       </div>
       <BodyText size="small">Velocity: {velocity}</BodyText>
       <div className="flex items-center gap-2">
         <BodyText size="small">Drive mode:</BodyText>
         <input
           className="w-4 h-4 border border-gray-300 rounded disabled:cursor-not-allowed disabled:opacity-70"
+          checked={carDriveMode}
           type="checkbox"
           id={carId.toString()}
           onChange={toggleDriveMode}
