@@ -19,16 +19,19 @@ const CARS_PER_PAGE = 7;
 
 const fetcher = (page: number) => getCars(page, CARS_PER_PAGE);
 
+/* GaragePage is a component that is used to display the garage page */
 function GaragePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentPage, setCurrentPage] = useState(1);
 
+  // useEffect is used to set the current page based on the search params
   useEffect(() => {
     const page = parseInt(searchParams.get('page') || '1', 10);
     setCurrentPage(page);
   }, [searchParams]);
 
+  // useSWR is used to fetch the cars from the server
   const { data, error, isLoading } = useSWR<{
     data: CarProps[];
     totalCount: number;
@@ -36,11 +39,13 @@ function GaragePage() {
     refreshInterval: 1000,
   });
 
+  // handlePageChange is used to handle the page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     router.push(`/garage?page=${page}`);
   };
 
+  // if the data is not available, show a loading spinner
   if (!data) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
@@ -49,6 +54,7 @@ function GaragePage() {
     );
   }
 
+  // if the data is not available, show a loading spinner
   if (isLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-50">
@@ -57,10 +63,12 @@ function GaragePage() {
     );
   }
 
+  // if there is an error, show the error message
   if (error) {
     return <div>{error.message}</div>;
   }
 
+  // calculate the total pages
   const totalPages = Math.ceil(data.totalCount / CARS_PER_PAGE);
 
   return (
