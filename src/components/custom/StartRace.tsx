@@ -33,6 +33,12 @@ function StartRace() {
       cars[0]
     );
 
+    if (winner) {
+      setToastMessage(
+        `Winner is a car with id ${winner.id} with a time of ${winner.time}`
+      );
+    }
+
     /**
      * This block of code is handling the logic for updating the winner of the race.
      * Here's a breakdown of what it does:
@@ -63,6 +69,9 @@ function StartRace() {
         <Toast
           message={toastMessage}
           onClose={() => setToastMessage('')}
+          duration={
+            toastMessage.includes('Winner is a car with id') ? 6000 : 3000
+          }
         />
       )}
       <Button
