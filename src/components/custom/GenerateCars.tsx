@@ -3,7 +3,7 @@ import getRandomCarColor from '@/lib/getRandomCarColor';
 import { createCar } from '@/lib/api/garage';
 import { Button } from '@/components/ui/button';
 
-const NUMBER_OF_CARS_TO_BE_GENERATED_AT_ONCE = 10;
+const NUMBER_OF_CARS_TO_BE_GENERATED_AT_ONCE = 100;
 
 /**
  * The function `GenerateCars` generates a specified number of cars with random names and colors when a
