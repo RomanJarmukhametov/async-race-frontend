@@ -15,6 +15,7 @@ function StartRace() {
   const [toastMessage, setToastMessage] = useState('');
   const { setRaceStarted, setCars } = useRace(); // Use the context
 
+  // handleStartRace is used to handle the start race logic
   const handleStartRace = async () => {
     const cars = getCarsInDriveMode();
 
@@ -33,16 +34,14 @@ function StartRace() {
       cars[0]
     );
 
+    // if there is a winner, show the toast message
     if (winner) {
       setToastMessage(
         `Winner is a car with id ${winner.id} with a time of ${winner.time}`
       );
     }
 
-    /**
-     * This block of code is handling the logic for updating the winner of the race.
-     * Here's a breakdown of what it does:
-     */
+    // create the winner if it does not exist or update the winner if it does exist
     try {
       await createWinner({ id: winner.id, wins: 1, time: winner.time });
     } catch {
@@ -59,8 +58,6 @@ function StartRace() {
         console.error('Error updating winner:', error);
       }
     }
-
-    console.log(winner);
   };
 
   return (
