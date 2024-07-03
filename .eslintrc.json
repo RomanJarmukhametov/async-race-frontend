@@ -17,6 +17,12 @@
     "no-console": "off",
     "import/prefer-default-export": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "react/function-component-definition": "off",
+    "arrow-body-style": "off",
+    "react/jsx-no-constructed-context-values": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "jsx-a11y/anchor-has-content": "off"
   }
 }
