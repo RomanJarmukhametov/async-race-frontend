@@ -6,15 +6,11 @@ Async Race is a Single Page Application (SPA) that manages a collection of radio
 
 ## Deployment
 
-The application is deployed on Vercel. You can access it [here](#).
+The application is deployed on Vercel. You can access it [here](https://async-race-frontend-git-main-roman-jarmukhametovs-projects.vercel.app/).
 
-## Checklist and Score
+You can also get the backend [here](https://github.com/mikhama/async-race-api).
 
-- [ ] **Deployment Platform:** Successfully deploy the UI on one of the following platforms: GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a similar service.
-- [x] **Commit guidelines compliance:** Ensure that all commits follow the specified commit guidelines.
-- [x] **Checklist included in README.md:** Include the project's checklist in the README.md file. Mark all implemented features.
-- [ ] **Score calculation:** Use this checklist to calculate your score and put it at the top of the README.md.
-- [ ] **UI Deployment link in README.md**: Place the link to the deployed UI at the top of the README.md file, alongside the calculated score.
+My personal score is 405 points.
 
 ## Objectives
 
@@ -28,7 +24,7 @@ The application is deployed on Vercel. You can access it [here](#).
 
 ## 🚀 UI Deployment
 
-- [ ] **Deployment Platform:** Successfully deploy the UI on one of the following platforms: GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a similar service.
+- [x] **Deployment Platform:** Successfully deploy the UI on one of the following platforms: GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a similar service.
 
 ## ✅ Requirements to Commits and Repository
 
@@ -36,9 +32,9 @@ The application is deployed on Vercel. You can access it [here](#).
 
 - [x] **Checklist included in README.md:** Include the project's checklist in the README.md file. Mark all implemented features to provide a clear overview of the project's completion status.
 
-- [ ] **Score calculation:** Use this checklist to calculate your score. Check all implemented features, then calculate your score and put it at the top of the `README.md`.
+- [x] **Score calculation:** Use this checklist to calculate your score. Check all implemented features, then calculate your score and put it at the top of the `README.md`.
 
-- [ ] **UI Deployment link in README.md**: Place the link to the deployed UI at the top of the README.md file, alongside the calculated score.
+- [x] **UI Deployment link in README.md**: Place the link to the deployed UI at the top of the README.md file, alongside the calculated score.
 
 ## 🏁 Basic Structure (85 points)
 
@@ -46,7 +42,7 @@ The application is deployed on Vercel. You can access it [here](#).
 
 - [x] **Two Views (10 points):** Implement two primary views: "Garage" and "Winners".
 - [x] **Garage View Content (5 points):** The "Garage" view must display its name, the current page number, and the total number of cars in the database (how many car user has in his garage).
-- [ ] **Winners View Content (5 points):** The "Winners" view should similarly display its name, the current page number, and the total count of records in the database (how many records the winners table contains).
+- [x] **Winners View Content (5 points):** The "Winners" view should similarly display its name, the current page number, and the total count of records in the database (how many records the winners table contains).
 - [x] **Persistent State (10 points):** Ensure the view state remains consistent when navigating between views. This includes preserving page numbers and input states. For example, page number shouldn't be reset, input controls should contain that they contained before switching, etc.
 
 ### 2. Garage View Functionality (55 points)
@@ -68,19 +64,19 @@ The application is deployed on Vercel. You can access it [here](#).
 - [x] **Start Engine Animation (20 points):** User clicks to the engine start button -> UI is waiting for car's velocity answer -> animate the car and makes another request to drive. In case api returned 500 error car animation should be stopped.
 - [x] **Stop Engine Animation (10 points):** User clicks to the engine stop button -> UI is waiting for answer for stopping engine -> car returned to it's initial place.
 - [x] **Button States (5 points):** Start engine button should be disabled in case car is already in driving mode. As well as stop engine button should be disabled when car is on it's initial place.
-- [ ] **Responsive Animation (5 points):** Ensure car animations are fluid and responsive on screens as small as 500px.
+- [x] **Responsive Animation (5 points):** Ensure car animations are fluid and responsive on screens as small as 500px.
 
 ## 🏎️ Race Animation (35 points)
 
-- [ ] **Start Race Button (15 points):** Implement a button to start the race for all cars on the current page.
-- [ ] **Reset Race Button (10 points):** Create a button to reset the race, returning all cars to their starting positions.
-- [ ] **Winner Announcement (10 points):** After some car finishes first user should see the message contains car's name that shows which one has won.
+- [x] **Start Race Button (15 points):** Implement a button to start the race for all cars on the current page.
+- [x] **Reset Race Button (10 points):** Create a button to reset the race, returning all cars to their starting positions.
+- [x] **Winner Announcement (10 points):** After some car finishes first user should see the message contains car's name that shows which one has won.
 
 ## 🏆 Winners View (45 points)
 
 - [x] **Display Winners (15 points):** After some car wins it should be displayed at the "Winners view" table.
 - [x] **Pagination for Winners (10 points):** Implement pagination for the "Winners" view, with 10 winners per page.
-- [ ] **Winners Table (10 points):** The table should include columns for the car's №, image, name, number of wins, and best time in seconds. If the same car wins more than once the number of wins should be incremented while best time should be saved only if it's better than the stored one.
+- [x] **Winners Table (10 points):** The table should include columns for the car's №, image, name, number of wins, and best time in seconds. If the same car wins more than once the number of wins should be incremented while best time should be saved only if it's better than the stored one.
 - [x] **Sorting Functionality (10 points):** Allow users to sort the table by the number of wins and best time, in ascending or descending order.
 
 ## 🏗️ Application Architecture (40 points)
@@ -106,7 +102,7 @@ The application is deployed on Vercel. You can access it [here](#).
 ## 📏 Code Organization and Efficiency (15 points)
 
 - [x] **Function Modularization (10 points):** Code should be organized into small, clearly named functions with specific purposes. Each function should not exceed 40 lines, reflecting strong typing and avoiding the use of magic numbers or strings.
-- [ ] **Code Duplication and Magic Numbers (5 points):** Minimize code duplication and maintain readability by avoiding the use of magic numbers or strings throughout the codebase.
+- [x] **Code Duplication and Magic Numbers (5 points):** Minimize code duplication and maintain readability by avoiding the use of magic numbers or strings throughout the codebase.
 
 ## 🎨 Prettier and ESLint Configuration (10 points)
 
@@ -115,4 +111,4 @@ The application is deployed on Vercel. You can access it [here](#).
 
 ## 🌟 Overall Code Quality (35 points)
 
-- [ ] **(Up to 35 points)** Discretionary points awarded by the reviewer based on overall code quality, readability
+- [x] **(Up to 35 points)** Discretionary points awarded by the reviewer based on overall code quality, readability
