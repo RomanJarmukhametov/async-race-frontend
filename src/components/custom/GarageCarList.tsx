@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRace } from '@/context/RaceContext';
 import CarIcon from '@/components/custom/CarIcon';
 import CarDelete from '@/components/custom/CarDelete';
@@ -24,6 +24,12 @@ array using the `map` function to create a list of car elements. */
 function GarageCarList({ cars }: GarageCarListProps) {
   const { raceStarted, cars: carsInDriveMode } = useRace();
 
+  const [driveModes, setDriveModes] = useState<{ [key: string]: boolean }>({});
+
+  const handleDriveModeChange = (carId: number, isInDriveMode: boolean) => {
+    setDriveModes((prev) => ({ ...prev, [carId]: isInDriveMode }));
+  };
+
   return (
     <div className="mt-6 space-y-4">
       <Table>
@@ -44,7 +50,8 @@ function GarageCarList({ cars }: GarageCarListProps) {
               ? `duration-[${durationMs}ms]`
               : '';
 
-            const shouldMove = raceStarted && !!carInDriveMode;
+            const shouldMove =
+              (raceStarted && !!carInDriveMode) || driveModes[car.id];
 
             return (
               <TableRow key={car.id}>
@@ -67,6 +74,7 @@ function GarageCarList({ cars }: GarageCarListProps) {
                   <EngineControl
                     carId={car.id}
                     name={car.name}
+                    onDriveModeChange={handleDriveModeChange}
                   />
                 </TableCell>
                 <TableCell className="relative">

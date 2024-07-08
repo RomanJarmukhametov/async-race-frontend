@@ -8,11 +8,15 @@ import { startEngine, stopEngine, setDriveMode } from '@/lib/api/engine';
 import Toast from '@/components/custom/Toast';
 import BodyText from '@/components/custom/BodyText';
 
+interface EngineControlProps extends CarEngine {
+  onDriveModeChange: (carId: number, isInDriveMode: boolean) => void;
+}
+
 /*  
   This component is used to control the engine of a car and to display the velocity, drive mode, and time in seconds.
   It uses the local storage to save the state of the engine and to persist it between page refreshes.
 */
-function EngineControl({ carId, name }: CarEngine) {
+function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
   const [isStarted, setIsStarted] = useState<boolean>(() => {
     const savedStatus = localStorage.getItem(`${carId}-engineStatus`);
     return savedStatus ? JSON.parse(savedStatus) : false;
@@ -30,7 +34,6 @@ function EngineControl({ carId, name }: CarEngine) {
     return savedDriveMode ? JSON.parse(savedDriveMode) : false;
   });
   const [toastMessage, setToastMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   // Save the state of the engine to local storage
   useEffect(() => {
@@ -82,6 +85,16 @@ function EngineControl({ carId, name }: CarEngine) {
         const timeInMs = newDistance / newVelocity;
         const timeInSec = timeInMs / 1000;
         setTimeInSeconds(parseFloat(timeInSec.toFixed(2)));
+
+        // Set drive mode when engine is started
+        const { success } = await setDriveMode(carId);
+        if (success) {
+          setCarDriveMode(true);
+          onDriveModeChange(carId, true);
+          setToastMessage(`Drive mode started for ${name}`);
+        } else {
+          setToastMessage('Failed to start drive mode');
+        }
       } catch (error) {
         console.error('Failed to start engine:', error);
         setToastMessage('Failed to start engine');
@@ -91,35 +104,13 @@ function EngineControl({ carId, name }: CarEngine) {
         await stopEngine(carId);
         setVelocity(0);
         setTimeInSeconds(0);
+        setCarDriveMode(false); // Reset drive mode when engine is stopped
+        onDriveModeChange(carId, false);
         setToastMessage(`Engine stopped for ${name}`);
       } catch (error) {
         console.error('Failed to stop engine:', error);
         setToastMessage('Failed to stop engine');
       }
-    }
-  };
-
-  // Toggle the drive mode
-  const toggleDriveMode = async () => {
-    if (isStarted) {
-      setIsLoading(true);
-      try {
-        const { success } = await setDriveMode(carId);
-        if (success) {
-          setCarDriveMode((prevDriveMode) => !prevDriveMode);
-          setToastMessage(
-            `Drive mode ${!carDriveMode ? 'started' : 'stopped'} for ${name}`
-          );
-        }
-      } catch (error) {
-        setCarDriveMode(false);
-        console.error(
-          `Failed to ${!carDriveMode ? 'start' : 'stop'} drive mode:`,
-          error
-        );
-        setToastMessage(`Drive mode stopped for ${name}`);
-      }
-      setIsLoading(false);
     }
   };
 
@@ -137,17 +128,7 @@ function EngineControl({ carId, name }: CarEngine) {
         {isStarted ? <StopIcon /> : <StartIcon />}
       </div>
       <BodyText size="small">Velocity: {velocity}</BodyText>
-      <div className="flex items-center gap-2">
-        <BodyText size="small">Drive mode:</BodyText>
-        <input
-          className="w-4 h-4 border border-gray-300 rounded disabled:cursor-not-allowed disabled:opacity-70"
-          checked={carDriveMode}
-          type="checkbox"
-          id={carId.toString()}
-          onChange={toggleDriveMode}
-          disabled={!isStarted || isLoading}
-        />
-      </div>
+
       {toastMessage && (
         <Toast
           message={toastMessage}
