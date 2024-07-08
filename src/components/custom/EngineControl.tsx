@@ -12,10 +12,6 @@ interface EngineControlProps extends CarEngine {
   onDriveModeChange: (carId: number, isInDriveMode: boolean) => void;
 }
 
-/*  
-  This component is used to control the engine of a car and to display the velocity, drive mode, and time in seconds.
-  It uses the local storage to save the state of the engine and to persist it between page refreshes.
-*/
 function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
   const [isStarted, setIsStarted] = useState<boolean>(() => {
     const savedStatus = localStorage.getItem(`${carId}-engineStatus`);
