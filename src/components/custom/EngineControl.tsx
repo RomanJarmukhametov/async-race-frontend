@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback } from 'react';
 import StartIcon from '@/components/custom/StartIcon';
 import StopIcon from '@/components/custom/StopIcon';
 import CarEngine from '@/types/CarEngine';
-import { startEngine, stopEngine, setDriveMode } from '@/lib/api/engine';
 import Toast from '@/components/custom/Toast';
 import BodyText from '@/components/custom/BodyText';
+import { toggleEngine as toggleEngineUtil } from '@/lib/toggleEngine';
 
 interface EngineControlProps extends CarEngine {
   onDriveModeChange: (carId: number, isInDriveMode: boolean) => void;
@@ -74,44 +74,18 @@ function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
   }, [handleStorageChange]);
 
   // Toggle the engine start/stop
-  const toggleEngine = async () => {
-    setIsStarted((prevIsStarted) => !prevIsStarted);
-    if (!isStarted) {
-      try {
-        const { velocity: newVelocity, distance: newDistance } =
-          await startEngine(carId);
-        setVelocity(newVelocity);
-        setToastMessage(`Engine started for ${name}`);
-        const timeInMs = newDistance / newVelocity;
-        const timeInSec = timeInMs / 1000;
-        setTimeInSeconds(parseFloat(timeInSec.toFixed(2)));
-
-        // Set drive mode when engine is started
-        const { success } = await setDriveMode(carId);
-        if (success) {
-          setCarDriveMode(true);
-          onDriveModeChange(carId, true);
-          setToastMessage(`Drive mode started for ${name}`);
-        } else {
-          setToastMessage('Failed to start drive mode');
-        }
-      } catch (error) {
-        console.error('Failed to start engine:', error);
-        setToastMessage('Failed to start engine');
-      }
-    } else {
-      try {
-        await stopEngine(carId);
-        setVelocity(0);
-        setTimeInSeconds(0);
-        setCarDriveMode(false); // Reset drive mode when engine is stopped
-        onDriveModeChange(carId, false);
-        setToastMessage(`Engine stopped for ${name}`);
-      } catch (error) {
-        console.error('Failed to stop engine:', error);
-        setToastMessage('Failed to stop engine');
-      }
-    }
+  const toggleEngine = () => {
+    toggleEngineUtil({
+      carId,
+      name: name || '',
+      isStarted,
+      setIsStarted,
+      setVelocity,
+      setTimeInSeconds,
+      setCarDriveMode,
+      setToastMessage,
+      onDriveModeChange,
+    });
   };
 
   return (
