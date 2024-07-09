@@ -23,6 +23,7 @@
     "arrow-body-style": "off",
     "react/jsx-no-constructed-context-values": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "jsx-a11y/anchor-has-content": "off"
+    "jsx-a11y/anchor-has-content": "off",
+    "global-require": "off"
   }
 }
