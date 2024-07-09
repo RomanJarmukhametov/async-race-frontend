@@ -7,48 +7,64 @@ import CarEdit from '@/components/custom/CarEdit';
 import EngineControl from '@/components/custom/EngineControl';
 import CarProps from '@/types/CarProps';
 import BodyText from '@/components/custom/BodyText';
-// import { getCarsInDriveMode } from '@/lib/getCarsInDriveMode';
 
 interface GarageCarListProps {
   cars: CarProps[];
 }
 
-/* The `GarageCarList` function is a React functional component that takes in a prop object `cars` of
-type `GarageCarListProps`. Inside the function, it returns JSX code that iterates over the `cars`
-array using the `map` function to create a list of car elements. */
 function GarageCarList({ cars }: GarageCarListProps) {
-  const [driveModes, setDriveModes] = useState<{ [key: number]: boolean }>({});
-  const [durations, setDurations] = useState<{ [key: number]: number }>({});
+  const [statuses, setStatuses] = useState<{
+    [key: number]: {
+      engineStatus: boolean;
+      velocity: number;
+      driveMode: boolean;
+    };
+  }>({});
 
-  // Initialize driveModes from local storage
+  // Initialize statuses from local storage
   useEffect(() => {
-    const loadDriveModesAndDurations = () => {
-      const initialDriveModes: { [key: number]: boolean } = {};
-      const initialDurations: { [key: number]: number } = {};
+    const loadStatuses = () => {
+      const initialStatuses: {
+        [key: number]: {
+          engineStatus: boolean;
+          velocity: number;
+          driveMode: boolean;
+        };
+      } = {};
       Object.keys(localStorage).forEach((key) => {
-        if (key.endsWith('-driveMode')) {
-          const carId = parseInt(key.split('-')[0], 10);
-          const isInDriveMode = localStorage.getItem(key) === 'true';
-          initialDriveModes[carId] = isInDriveMode;
-        } else if (key.endsWith('-timeInSeconds')) {
-          const carId = parseInt(key.split('-')[0], 10);
-          const timeInSeconds = parseFloat(localStorage.getItem(key) || '0');
-          initialDurations[carId] = timeInSeconds * 1000; // Convert to milliseconds
+        const carId = parseInt(key.split('-')[0], 10);
+        if (!initialStatuses[carId]) {
+          initialStatuses[carId] = {
+            engineStatus: false,
+            velocity: 0,
+            driveMode: false,
+          };
+        }
+        if (key.endsWith('-engineStatus')) {
+          initialStatuses[carId].engineStatus =
+            localStorage.getItem(key) === 'true';
+        } else if (key.endsWith('-engineVelocity')) {
+          initialStatuses[carId].velocity = parseFloat(
+            localStorage.getItem(key) || '0'
+          );
+        } else if (key.endsWith('-driveMode')) {
+          initialStatuses[carId].driveMode =
+            localStorage.getItem(key) === 'true';
         }
       });
-      setDriveModes(initialDriveModes);
-      setDurations(initialDurations);
+      setStatuses(initialStatuses);
     };
 
-    loadDriveModesAndDurations();
+    loadStatuses();
 
     const handleStorageChange = (event: StorageEvent) => {
       if (
         event.key &&
-        (event.key.endsWith('-driveMode') ||
-          event.key.endsWith('-timeInSeconds'))
+        (event.key.endsWith('-engineStatus') ||
+          event.key.endsWith('-engineVelocity') ||
+          event.key.endsWith('-driveMode'))
       ) {
-        loadDriveModesAndDurations();
+        loadStatuses();
       }
     };
 
@@ -60,18 +76,37 @@ function GarageCarList({ cars }: GarageCarListProps) {
   }, []);
 
   const handleDriveModeChange = (carId: number, isInDriveMode: boolean) => {
-    setDriveModes((prev) => ({ ...prev, [carId]: isInDriveMode }));
+    setStatuses((prev) => ({
+      ...prev,
+      [carId]: { ...prev[carId], driveMode: isInDriveMode },
+    }));
     localStorage.setItem(`${carId}-driveMode`, isInDriveMode.toString());
+  };
+
+  const handleEngineStatusChange = (
+    carId: number,
+    isEngineStarted: boolean,
+    velocity: number
+  ) => {
+    setStatuses((prev) => ({
+      ...prev,
+      [carId]: { ...prev[carId], engineStatus: isEngineStarted, velocity },
+    }));
+    localStorage.setItem(`${carId}-engineStatus`, isEngineStarted.toString());
+    localStorage.setItem(`${carId}-engineVelocity`, velocity.toString());
   };
 
   return (
     <div className="mt-6 space-y-4">
       <div className="flex flex-col">
         {cars.map((car) => {
-          const duration = durations[car.id] ? durations[car.id] + 5000 : 3000; // Add 5000ms for smoothness, default to 3000ms if not set
-          console.log('duration of ', car.id, duration);
-          const durationClass = `duration-[${duration}ms]`;
-          const shouldMove = driveModes[car.id];
+          const { engineStatus, velocity, driveMode } = statuses[car.id] || {
+            engineStatus: false,
+            velocity: 0,
+            driveMode: false,
+          };
+          const durationMs = driveMode ? 3000 : velocity > 0 ? 5000 : 0; // Adjust duration based on engine status and drive mode
+          const durationClass = `duration-[${durationMs}ms]`;
 
           return (
             <div
@@ -99,13 +134,18 @@ function GarageCarList({ cars }: GarageCarListProps) {
                     carId={car.id}
                     name={car.name}
                     onDriveModeChange={handleDriveModeChange}
+                    onEngineStatusChange={handleEngineStatusChange}
                   />
                 </div>
 
                 <div className="w-full">
                   <p
-                    className={`h-10 text-xl text-bold transition-transform text-gray-950 ${durationClass} ${
-                      shouldMove ? 'translate-x-[calc(100%-2.5rem)]' : ''
+                    className={`h-10 text-xl text-bold transition-transform text-gray-950  ${
+                      driveMode
+                        ? `translate-x-[calc(100%-2.5rem)] duration-10000`
+                        : engineStatus && velocity > 0
+                        ? `translate-x-[calc(50%-2.5rem)] duration-14000`
+                        : ''
                     }`}
                     style={{ color: car.color }}
                   >

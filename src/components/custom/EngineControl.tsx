@@ -10,9 +10,19 @@ import { toggleEngine as toggleEngineUtil } from '@/lib/toggleEngine';
 
 interface EngineControlProps extends CarEngine {
   onDriveModeChange: (carId: number, isInDriveMode: boolean) => void;
+  onEngineStatusChange: (
+    carId: number,
+    isEngineStarted: boolean,
+    velocity: number
+  ) => void;
 }
 
-function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
+function EngineControl({
+  carId,
+  name,
+  onDriveModeChange,
+  onEngineStatusChange,
+}: EngineControlProps) {
   const [isStarted, setIsStarted] = useState<boolean>(() => {
     const savedStatus = localStorage.getItem(`${carId}-engineStatus`);
     return savedStatus ? JSON.parse(savedStatus) : false;
@@ -81,6 +91,7 @@ function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
       setCarDriveMode,
       setToastMessage,
       onDriveModeChange,
+      onEngineStatusChange,
     });
   };
 
