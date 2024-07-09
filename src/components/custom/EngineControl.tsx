@@ -95,9 +95,15 @@ function EngineControl({ carId, name, onDriveModeChange }: EngineControlProps) {
         tabIndex={0}
         role="button"
       >
-        {isStarted ? <StopIcon /> : <StartIcon />}
+        <div className="flex flex-row gap-2 items-center mb-3">
+          {isStarted ? (
+            <BodyText size="small">Stop engine</BodyText>
+          ) : (
+            <BodyText size="small">Start engine</BodyText>
+          )}
+          {isStarted ? <StopIcon /> : <StartIcon />}
+        </div>
       </div>
-      <BodyText size="small">Velocity: {velocity}</BodyText>
 
       {toastMessage && (
         <Toast
