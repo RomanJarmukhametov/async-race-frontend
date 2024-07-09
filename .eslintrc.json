@@ -24,6 +24,7 @@
     "react/jsx-no-constructed-context-values": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "jsx-a11y/anchor-has-content": "off",
-    "global-require": "off"
+    "global-require": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

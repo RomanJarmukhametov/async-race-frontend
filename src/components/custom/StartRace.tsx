@@ -1,49 +1,55 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import Toast from '@/components/custom/Toast';
+import { useRouter } from 'next/navigation';
 import {
   createWinner,
   updateWinner,
   getWinnerByCarId,
 } from '@/lib/api/winners';
 import { useRace } from '@/context/RaceContext';
-import { getCars } from '@/lib/api/garage';
 import { startEngine, setDriveMode } from '@/lib/api/engine';
+import { getCars } from '@/lib/api/garage';
+
+const CARS_PER_PAGE = 7; // Define the constant here
+
+// Fetch cars for the specified page
+const fetchCarsByPage = async (page: number) => {
+  const { data: cars, totalCount } = await getCars(page, CARS_PER_PAGE);
+  return { cars, totalCount };
+};
+
+// Manually trigger the storage event
+const triggerStorageEvent = (key: string, value: string) => {
+  const event = new StorageEvent('storage', {
+    key,
+    newValue: value,
+    oldValue: null,
+    storageArea: localStorage,
+    url: window.location.href,
+  });
+  window.dispatchEvent(event);
+};
 
 function StartRace() {
   const [toastMessage, setToastMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const { setRaceStarted, setCars } = useRace(); // Use the context
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1); // Add state to manage the current page
 
-  // Fetch all cars in a single request
-  const fetchAllCars = async () => {
-    // Fetch the first page to get the total count
-    const { totalCount } = await getCars(1, 1);
-
-    // Fetch all cars with totalCount as the limit
-    const { data: allCars } = await getCars(1, totalCount);
-
-    return allCars;
-  };
-
-  // Manually trigger the storage event
-  const triggerStorageEvent = (key: string, value: string) => {
-    const event = new StorageEvent('storage', {
-      key,
-      newValue: value,
-      oldValue: null,
-      storageArea: localStorage,
-      url: window.location.href,
-    });
-    window.dispatchEvent(event);
-  };
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get('page');
+    setCurrentPage(page ? parseInt(page, 10) : 1);
+  }, [router]);
 
   // handleStartRace is used to handle the start race logic
   const handleStartRace = async () => {
     setLoading(true);
-    const cars = await fetchAllCars();
+    const { cars, totalCount } = await fetchCarsByPage(currentPage);
     console.log(cars);
 
     if (cars.length === 0) {
