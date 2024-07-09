@@ -14,6 +14,8 @@ export function getCarsInDriveMode(): {
       const timeInSecondsKey = `${id}-timeInSeconds`;
       const time = parseFloat(localStorage.getItem(timeInSecondsKey) || '0');
 
+      console.log(`Key: ${key}, DriveMode: ${driveMode}, Time: ${time}`); // Debugging
+
       if (driveMode) {
         carsInDriveMode.push({ id, time });
       }
